@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tenemos una cita 💖</title>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+    :root {
+      --rosa: #e91e63;
+      --fondo: #fff0f5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--fondo);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* CORAZONES ANIMADOS */
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      animation: float 10s linear infinite;
+      z-index: 0;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff6f91;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      left: -10px;
+      top: 0;
+    }
+
+    .heart::after {
+      top: -10px;
+      left: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    .acceso {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 5;
+      position: relative;
+      background-color: var(--fondo);
+      padding: 20px;
+    }
+
+    .acceso label {
+      font-size: 1.2rem;
+      color: #444;
+    }
+
+    .acceso input {
+      padding: 12px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 250px;
+      text-align: center;
+    }
+
+    .acceso button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--rosa);
+      color: white;
+      cursor: pointer;
+    }
+
+    .container {
+      display: none;
+      flex-wrap: wrap;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      animation: floatImage 6s ease-in-out infinite;
+      max-width: 350px;
+    }
+
+    .polaroid img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .polaroid p {
+      text-align: center;
+      margin-top: 10px;
+      color: var(--rosa);
+      font-weight: bold;
+    }
+
+    @keyframes floatImage {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .content {
+      flex: 1 1 300px;
+      max-width: 600px;
+    }
+
+    h1 {
+      color: var(--rosa);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .btn {
+      background-color: var(--rosa);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #c2185b;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    .close {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CORAZONES -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 5 + Math.random() * 5 + "s";
+      heart.style.opacity = Math.random();
+      heart.style.fontSize = Math.random() * 10 + 10 + "px";
+      document.body.appendChild(heart);
+    }
+  </script>
+
+<!-- PANTALLA DE ACCESO -->
+<div class="acceso" id="pantallaAcceso">
+  <h2>Ingresa el código de acceso</h2>
+  <label>🔐 Una fecha especial 😉</label>
+  <input type="date" id="codigoFecha" />
+  <button onclick="verificarCodigo()">Acceder</button>
+</div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="container" id="mainContent">
+    <div class="polaroid" data-aos="fade-right">
+      <img src="image02.jpeg" alt="Nosotros">
+      <p>Nosotros 💕</p>
+    </div>
+
+  <div class="content" data-aos="fade-left">
+  <h1>Hola, mi amor 💖</h1>
+  <p>Este <strong>2 de agosto</strong> celebramos algo muy especial: nuestro primer año juntos.</p>
+  <p>Y como no podía pasar desapercibido... quiero invitarte a una cena muy especial.</p>
+  <p>Quiero que esta cita sea mágica, que recordemos ese lugar donde todo comenzó, donde te pedí que fueras mi novia. Desde entonces, el <strong>2 de agosto</strong> se volvió nuestra fecha para siempre.</p>
+
+  <p><strong>📍 Lugar:</strong> La Casca<br>
+     <strong>📅 Día:</strong> Sábado 2 de agosto<br>
+     <strong>🕖 Hora:</strong> 7:00 PM</p>
+
+  <p>¿Me acompañas a celebrar este amor tan bonito que compartimos?</p>
+  <button class="btn" onclick="abrirModal()">Confirmar asistencia</button>
+</div>
+
+
+<!-- MODAL DE CONFIRMACIÓN -->
+<div class="modal" id="modalForm">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">×</span>
+    <h2>¿Qué dices, amor? 💌</h2>
+    <form onsubmit="enviarWhatsapp(event)">
+      <textarea id="respuesta" placeholder="Sí o sí" required></textarea>
+      <textarea id="mensaje" placeholder="¿Quieres decirme algo más?" rows="3"></textarea>
+      <button class="btn" type="submit">Enviar </button>
+    </form>
+  </div>
+</div>
+
+
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    function verificarCodigo() {
+      const fecha = document.getElementById('codigoFecha').value;
+      if (fecha === "2024-08-02") {
+        document.getElementById("pantallaAcceso").style.display = "none";
+        document.getElementById("mainContent").style.display = "flex";
+        document.getElementById("mainContent").scrollIntoView({ behavior: "smooth" });
+      } else {
+        alert("Ups... esa no es la fecha correcta 💔");
+      }
+    }
+
+    function abrirModal() {
+      document.getElementById('modalForm').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalForm').style.display = 'none';
+    }
+
+    
+function enviarWhatsapp(event) {
+  event.preventDefault();
+  const respuesta = document.getElementById('respuesta').value.trim();
+  const mensajeExtra = document.getElementById('mensaje').value.trim();
+
+  const texto = `Hola mi amor! 💕\n\nMi respuesta: ${respuesta}\n${
+    mensajeExtra ? "💬 Mensaje: " + mensajeExtra : ""
+  }`;
+  
+  const url = `https://wa.me/50497744055?text=${encodeURIComponent(texto)}`;
+  window.open(url, "_blank");
+}
+
+
+  </script>
+</body>
+</html>
